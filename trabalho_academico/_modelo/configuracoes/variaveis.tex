@@ -1,0 +1,435 @@
+% =====
+% Variáveis
+% =====
+
+% -----
+% Flags e outras variáveis de decisão
+% -----
+
+% --- Título ---
+\newif\ifDefinidoSubtitulo{} \DefinidoSubtitulofalse{}
+
+% --- Trabalho ---
+\newif\ifDefinidoEstado{} \DefinidoEstadofalse{}
+\newif\ifDefinidoEspecializacao{} \DefinidoEspecializacaofalse{}
+\newif\ifDefinidoMestrado{} \DefinidoMestradofalse{}
+\newif\ifDefinidoDoutorado{} \DefinidoDoutoradofalse{}
+
+% --- Pessoas ---
+\newif\ifDefinidoCoorientador{} \DefinidoCoorientadorfalse{}
+\newif\ifDefinidoExaminadorUm{} \DefinidoExaminadorUmfalse{}
+\newif\ifDefinidoExaminadorDois{} \DefinidoExaminadorDoisfalse{}
+\newif\ifDefinidoExaminadorTres{} \DefinidoExaminadorTresfalse{}
+\newif\ifDefinidoExaminadorQuatro{} \DefinidoExaminadorQuatrofalse{}
+
+\newif\ifGeneroDoOrientadorFeminino{} \GeneroDoOrientadorFemininofalse{}
+\newif\ifGeneroDoCoorientadorFeminino{} \GeneroDoCoorientadorFemininofalse{}
+
+% -----
+
+% -----
+% Variáveis de texto
+% -----
+
+% --- Título ---
+\def\DefineTitulo#1{\gdef\ValorDoTitulo{#1}}
+
+\def\DefineSubtitulo#1{\gdef\ValorDoSubtitulo{#1}\DefinidoSubtitulotrue}
+
+\gdef\ValorDoTituloCompleto{%
+    \ValorDoTitulo{}%
+    \ifDefinidoSubtitulo{}: \ValorDoSubtitulo{}\fi%
+}
+
+% --- Trabalho ---
+
+\def\DefineCurso#1{\gdef\ValorDoCurso{#1}}
+
+\def\DefineDataDeAprovacao#1#2#3{%
+    \gdef\ValorDoDiaDeAprovacao{#1}
+    \gdef\ValorDoMesDeAprovacao{#2}
+    \gdef\ValorDoAnoDeAprovacao{#3}
+}
+\gdef\ValorDaDataDeAprovacao{\ValorDoMesDeAprovacao{}, \ValorDoAnoDeAprovacao{}}
+\data{\ValorDaDataDeAprovacao}
+
+\def\DefineCidade#1{\gdef\ValorDaCidade{#1}}
+\def\DefineEstado#1#2{%
+    \gdef\ValorDoEstado{#1}
+    \gdef\ValorDaSiglaDoEstado{#2}
+    \DefinidoEstadotrue%
+}
+\def\DefinePais#1{\gdef\ValorDoPais{#1}}
+
+\gdef\ValorDoLocal{%
+    \ValorDaCidade{},
+    \ifDefinidoEstado%
+        \ValorDoEstado{},
+    \fi
+    \ValorDoPais{}%
+}
+\local{\ValorDoLocal}
+
+% -- Tipo do trabalho --
+
+\def\DefineGrau#1{\gdef\ValorDoGrau{#1}}
+
+\def\DefineDiploma#1{\gdef\ValorDoDiploma{#1}}
+
+\def\DefineDepartamento#1{\gdef\ValorDoNomeDoDepartamento{#1}}
+
+\def\DefineTipoInterno#1{\gdef\ValorDoTipo{#1}}
+
+\def\DefineBacharelado{\DefineGrau{bacharel} \DefineTipoInterno{Monografia} \DefineDiploma{Bacharelado}}
+
+\def\DefineLicenciatura{\DefineGrau{licenciado} \DefineTipoInterno{Monografia} \DefineDiploma{Licenciatura}}
+
+\def\DefineEspecializacao{\DefineGrau{especialista} \DefineTipoInterno{Monografia} \DefineDiploma{Especializa\c{c}\~ao} \DefinidoEspecializacaotrue}
+
+\def\DefineMestrado{\DefineGrau{mestre} \DefineTipoInterno{Disserta\c{c}\~{a}o} \DefineDiploma{Mestrado} \DefinidoMestradotrue}
+
+\def\defineDoutorado{\DefineGrau{doutor} \DefineTipoInterno{Tese} \DefineDiploma{Doutorado} \DefinidoDoutoradotrue}
+
+\ExplSyntaxOn%
+\NewDocumentCommand{\verificaTipo}{m}{%
+    \str_case:nn {#1} {%
+        {bacharelado} {\DefineBacharelado}
+            {licenciatura} {\DefineLicenciatura}
+            {especializacao} {\DefineEspecializacao}
+            {mestrado} {\DefineMestrado}
+            {doutorado} {\DefineDoutorado}
+            {default} {%
+                \msg_error:nnn {custom} {opcaoInvalidaParaVerificaTipo} {#1}
+            }
+    }
+}
+\msg_new:nnn {custom} {opcaoInvalidaParaVerificaTipo}
+{%
+    A~opção~``#1''~é~inválida.
+    Opções~válidas~são:~bacharelado,~licenciatura,~especializacao,~mestrado,~doutorado.
+}
+\ExplSyntaxOff%
+
+\def\DefineTipo#1{%
+    \verificaTipo{#1}%
+}
+\tipotrabalho{\ValorDoTipo}
+
+% --- Instituição ---
+
+\def\DefineInstituicao#1#2#3#4{
+    \gdef\ValorDoArtigoGramaticalDaInstituicao{#1}
+    \gdef\ValorDoNomeDaInstituicao{#2}
+    \gdef\ValorDaSiglaDaInstituicao{#3}
+    \gdef\ValorDaCidadeDaInstituicao{#4}
+}
+\instituicao{\ValorDoNomeDaInstituicao}
+
+\def\DefineUnidadeAcademica#1#2#3{
+    \gdef\ValorDoArtigoGramaticalDaUnidadeAcademica{#1}
+    \gdef\ValorDoNomeDaUnidadeAcademica{#2}
+    \gdef\ValorDaSiglaDaUnidadeAcademica{#3}
+}
+
+\def\DefinePrograma#1#2#3{
+    \gdef\ValorDoArtigoGramaticalDoPrograma{#1}
+    \gdef\ValorDoNomeDoPrograma{#2}
+    \gdef\ValorDaSiglaDoPrograma{#3}
+}
+
+\def\ValorDoNomeDoSubmetendo{%
+    \ifDefinidoMestrado%
+        \ValorDoNomeDoPrograma%
+    \else
+        \ifDefinidoDoutorado%
+            \ValorDoNomeDoPrograma%
+        \else
+            \ValorDoNomeDaUnidadeAcademica%
+        \fi
+    \fi
+}
+
+\def\ValorDoArtigoGramaticalDoSubmetendo{%
+    \ifDefinidoMestrado%
+        \ValorDoArtigoGramaticalDoPrograma%
+    \else
+        \ifDefinidoDoutorado%
+            \ValorDoArtigoGramaticalDoPrograma%
+        \else
+            \ValorDoArtigoGramaticalDaUnidadeAcademica%
+        \fi
+    \fi
+}
+
+% --- Pessoas ---
+
+\def\DefineAutor#1#2{\gdef\ValorDoUltimoSobrenomeDoAutor{#1} \gdef\ValorDoRestanteDoNomeDoAutor{#2} \gdef\ValorDoNomeCompletoDoAutor{#2 #1} \author{#2 #1}}
+
+\ExplSyntaxOn%
+\NewDocumentCommand{\DefineOrientador}{mmmmm}{%
+    \str_case:nn {#1} {%
+        {feminino} {\GeneroDoOrientadorFemininotrue}
+            {masculino} {\GeneroDoOrientadorFemininofalse}
+            {default} {%
+                \msg_error:nnn{custom}{opcaoInvalidaParaOrientador}{#1}
+            }
+    }
+    \gdef\ValorDoTituloDoOrientador{#2}
+    \gdef\ValorDoUltimoSobrenomeDoOrientador{#3}
+    \gdef\ValorDoRestanteDoNomeDoOrientador{#4}
+    \gdef\ValorDoNomeCompletoDoOrientador{#4\ #3}
+    \gdef\ValorDoNomeCompletoDoOrientadorComTitulo{#2\ #4\ #3}
+    \gdef\ValorDoNomeDaInstituicaoDoOrientador{#5}
+}
+\msg_new:nnn {custom} {opcaoInvalidaParaOrientador}
+{%
+    A~opção~``#1''~é~inválida.
+    Opções~válidas~são:~feminino,~masculino.
+}
+\ExplSyntaxOff%
+
+\ExplSyntaxOn%
+\NewDocumentCommand{\DefineCoorientador}{mmmmm}{%
+    \str_case:nn {#1} {%
+        {feminino} {\GeneroDoCoorientadorFemininotrue}
+            {masculino} {\GeneroDoCoorientadorFemininofalse}
+            {default} {%
+                \msg_error:nnn{custom}{opcaoInvalidaParaCoorientador}{#1}
+            }
+    }    \gdef\ValorDoTituloDoCoorientador{#2}
+    \gdef\ValorDoUltimoSobrenomeDoCoorientador{#3}
+    \gdef\ValorDoRestanteDoNomeDoCoorientador{#4}
+    \gdef\ValorDoNomeCompletoDoCoorientador{#4\ #3}
+    \gdef\ValorDoNomeCompletoDoCoorientadorComTitulo{#2\ #4\ #3}
+    \gdef\ValorDoNomeDaInstituicaoDoCoorientador{#5}
+    \DefinidoCoorientadortrue%
+}
+\msg_new:nnn {custom} {opcaoInvalidaParaCoorientador}
+{%
+    A~opção~``#1''~é~inválida.
+    Opções~válidas~são:~feminino,~masculino.
+}
+\ExplSyntaxOff%
+
+% \renewcommand{\imprimircoorientador}{%
+%     \ifDefinidoCoorientador%
+%         \ValorDoNomeCompletoDoCoorientador{}%
+%     \else%
+%     \fi%
+% }
+% \renewcommand{\imprimircoorientadorRotulo}{%
+%     \ifDefinidoCoorientador%
+%         \ValorDoTituloDoCoorientador{}%
+%     \else%
+%     \fi%
+% }
+
+\def\DefineExaminadorUm#1#2#3#4{
+    \gdef\ValorDoTituloDoExaminadorUm{#1}
+    \gdef\ValorDoUltimoSobrenomeDoExaminadorUm{#2}
+    \gdef\ValorDoRestanteDoNomeDoExaminadorUm{#3}
+    \gdef\ValorDoNomeCompletoDoExaminadorUm{#3\ #2}
+    \gdef\ValorDoNomeCompletoDoExaminadorUmComTitulo{#1\ #3\ #2}
+    \gdef\ValorDoNomeDaInstituicaoDoExaminadorUm{#4}
+    \DefinidoExaminadorUmtrue%
+}
+
+\def\DefineExaminadorDois#1#2#3#4{
+    \gdef\ValorDoTituloDoExaminadorDois{#1}
+    \gdef\ValorDoUltimoSobrenomeDoExaminadorDois{#2}
+    \gdef\ValorDoRestanteDoNomeDoExaminadorDois{#3}
+    \gdef\ValorDoNomeCompletoDoExaminadorDois{#3\ #2}
+    \gdef\ValorDoNomeCompletoDoExaminadorDoisComTitulo{#1\ #3\ #2}
+    \gdef\ValorDoNomeDaInstituicaoDoExaminadorDois{#4}
+    \DefinidoExaminadorDoistrue%
+}
+
+\def\DefineExaminadorTres#1#2#3#4{
+    \gdef\ValorDoTituloDoExaminadorTres{#1}
+    \gdef\ValorDoUltimoSobrenomeDoExaminadorTres{#2}
+    \gdef\ValorDoRestanteDoNomeDoExaminadorTres{#3}
+    \gdef\ValorDoNomeCompletoDoExaminadorTres{#3\ #2}
+    \gdef\ValorDoNomeCompletoDoExaminadorTresComTitulo{#1\ #3\ #2}
+    \gdef\ValorDoNomeDaInstituicaoDoExaminadorTres{#4}
+    \DefinidoExaminadorTrestrue%
+}
+
+\def\DefineExaminadorQuatro#1#2#3#4{
+    \gdef\ValorDoTituloDoExaminadorQuatro{#1}
+    \gdef\ValorDoUltimoSobrenomeDoExaminadorQuatro{#2}
+    \gdef\ValorDoRestanteDoNomeDoExaminadorQuatro{#3}
+    \gdef\ValorDoNomeCompletoDoExaminadorQuatro{#3\ #2}
+    \gdef\ValorDoNomeCompletoDoExaminadorQuatroComTitulo{#1\ #3\ #2}
+    \gdef\ValorDoNomeDaInstituicaoDoExaminadorQuatro{#4}
+    \DefinidoExaminadorQuatrotrue%
+}
+
+% --- Palavras-chave ---
+\def\DefinePalavrasChave#1#2#3#4#5
+{%
+    \gdef\ValorDaPalavraChaveUm{#1}
+    \gdef\ValorDaPalavraChaveDois{#2}
+    \gdef\ValorDaPalavraChaveTres{#3}
+    \gdef\ValorDaPalavraChaveQuatro{#4}
+    \gdef\ValorDaPalavraChaveCinco{#5}
+}
+
+\NewDocumentCommand{\formataPalavrasChave}{m m m m m}
+{%
+    #1;
+    #2;
+    #3%
+    \ifstrempty{#4}{}{; #4%
+        \ifstrempty{#5}{}{; #5}%
+    }%
+}
+
+\def\ValorDasPalavrasChave{
+    \ValorDaPalavraChaveUm;
+    \ValorDaPalavraChaveDois;
+    \ValorDaPalavraChaveTres%
+    \ifdefempty{\ValorDaPalavraChaveQuatro}{}{; \ValorDaPalavraChaveQuatro%
+        \ifdefempty{\ValorDaPalavraChaveCinco}{}{; \ValorDaPalavraChaveCinco}%
+    }%
+}
+
+% -----
+
+\def\testaVariaveis{
+    \ValorDoTitulo{}
+
+    {%
+        \ifDefinidoSubtitulo{%
+            Subtítulo está definido:
+            \ValorDoSubtitulo{}
+        }
+        \else{%
+            Subtítulo não está definido.
+        }
+        \fi
+    }
+
+    \ValorDoCurso{}
+
+    \ValorDaDataDeAprovacao{}
+
+    \ValorDoLocal{}
+
+    \ValorDoTipo{}
+    \ValorDoGrau{}
+    \ValorDoDiploma{}
+
+    \ValorDoArtigoGramaticalDaInstituicao{}
+    \ValorDoNomeDaInstituicao{}
+    \ValorDaSiglaDaInstituicao{}
+    \ValorDaCidadeDaInstituicao{}
+
+    \ValorDoArtigoGramaticalDaUnidadeAcademica{}
+    \ValorDoNomeDaUnidadeAcademica{}
+    \ValorDaSiglaDaUnidadeAcademica{}
+
+    \ValorDoArtigoGramaticalDoSubmetendo{}
+    \ValorDoNomeDoSubmetendo{}
+
+    \ValorDoUltimoSobrenomeDoAutor{} ---
+    \ValorDoRestanteDoNomeDoAutor{} ---
+    \ValorDoNomeCompletoDoAutor{}
+
+    \ifGeneroDoOrientadorFeminino{}Feminino\else Masculino\fi~---
+    \ValorDoTituloDoOrientador{} ---
+    \ValorDoUltimoSobrenomeDoOrientador{} ---
+    \ValorDoRestanteDoNomeDoOrientador{} ---
+    \ValorDoNomeCompletoDoOrientador{} ---
+    \ValorDoNomeCompletoDoOrientadorComTitulo{}
+
+    {%
+        \ifDefinidoCoorientador{%
+            Coorientador está definido:\\
+            \ifGeneroDoCoorientadorFeminino{}Feminino\else Masculino\fi~---
+            \ValorDoTituloDoCoorientador{} ---
+            \ValorDoUltimoSobrenomeDoCoorientador{} ---
+            \ValorDoRestanteDoNomeDoCoorientador{} ---
+            \ValorDoNomeCompletoDoCoorientador{} ---
+            \ValorDoNomeCompletoDoCoorientadorComTitulo{}
+        }
+        \else{%
+            Coorientador não está definido.
+        }
+        \fi
+    }
+
+    {%
+        \ifDefinidoExaminadorUm{%
+            Examinador um está definido:\\
+            \ValorDoTituloDoExaminadorUm{} ---
+            \ValorDoUltimoSobrenomeDoExaminadorUm{} ---
+            \ValorDoRestanteDoNomeDoExaminadorUm{} ---
+            \ValorDoNomeCompletoDoExaminadorUm{} ---
+            \ValorDoNomeCompletoDoExaminadorUmComTitulo{}
+        }
+        \else{%
+            Examinador um não está definido.
+        }
+        \fi
+    }
+
+    {%
+        \ifDefinidoExaminadorDois{%
+            Examinador dois está definido:\\
+            \ValorDoTituloDoExaminadorDois{} ---
+            \ValorDoUltimoSobrenomeDoExaminadorDois{} ---
+            \ValorDoRestanteDoNomeDoExaminadorDois{} ---
+            \ValorDoNomeCompletoDoExaminadorDois{} ---
+            \ValorDoNomeCompletoDoExaminadorDoisComTitulo{}
+        }
+        \else{%
+            Examinador dois não está definido.
+        }
+        \fi
+    }
+
+    {%
+        \ifDefinidoExaminadorTres{%
+            Examinador três está definido:\\
+            \ValorDoTituloDoExaminadorTres{} ---
+            \ValorDoUltimoSobrenomeDoExaminadorTres{} ---
+            \ValorDoRestanteDoNomeDoExaminadorTres{} ---
+            \ValorDoNomeCompletoDoExaminadorTres{} ---
+            \ValorDoNomeCompletoDoExaminadorTresComTitulo{}
+        }
+        \else{%
+            Examinador três não está definido.
+        }
+        \fi
+    }
+
+    {%
+        \ifDefinidoExaminadorQuatro{%
+            Examinador quatro está definido:\\
+            \ValorDoTituloDoExaminadorQuatro{} ---
+            \ValorDoUltimoSobrenomeDoExaminadorQuatro{} ---
+            \ValorDoRestanteDoNomeDoExaminadorQuatro{} ---
+            \ValorDoNomeCompletoDoExaminadorQuatro{} ---
+            \ValorDoNomeCompletoDoExaminadorQuatroComTitulo{}
+        }
+        \else{%
+            Examinador quatro não está definido.
+        }
+        \fi
+    }
+
+    [\ValorDaPalavraChaveUm]
+    [\ValorDaPalavraChaveDois]
+    [\ValorDaPalavraChaveTres]
+    [\ValorDaPalavraChaveQuatro]
+    [\ValorDaPalavraChaveCinco]
+
+    \ValorDasPalavrasChave.
+
+    % \ifdefempty{\ValorDaPalavraChaveQuatro}{Quarta palavra-chave vazia.}{Quarta palavra-chave não vazia.}
+
+    % \ifdefempty{\ValorDaPalavraChaveCinco}{Quinta palavra-chave vazia.}{Quinta palavra-chave não vazia.}
+
+}
+
+% =====

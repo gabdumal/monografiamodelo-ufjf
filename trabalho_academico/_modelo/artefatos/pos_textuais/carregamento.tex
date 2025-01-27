@@ -1,0 +1,26 @@
+% =====
+% Artefatos pós-textuais
+% =====
+
+\postextual{}
+
+% --- Referências ---
+\bibliography{cx_bibliografia}
+
+% --- Glossário ---
+\ifDefinidoInserirGlossario%
+    \printglossary[type=main,style=altlist,title=Glossário]
+    \addcontentsline{toc}{chapter}{\glossaryname}
+\fi
+
+% --- Apêndices ---
+\input{apendices/apendices.tex}
+
+% --- Anexos ---
+\input{anexos/anexos.tex}
+
+% --- Índice remissivo ---
+\phantompart{}
+\printindex{}
+
+% =====

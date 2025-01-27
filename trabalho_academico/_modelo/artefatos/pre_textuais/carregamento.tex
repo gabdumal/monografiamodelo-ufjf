@@ -1,0 +1,84 @@
+% =====
+% Artefatos pré-textuais
+% =====
+
+\pretextual{}
+
+% --- Capa ---
+\imprimircapa{}
+
+% --- Folha de rosto ---
+% --- Ficha catalográfica ---
+\ifDeveGerarFichaCatalografica%
+    % Imprime a folha de rosto com a ficha catalográfica no verso.
+    \imprimirfolhaderosto*
+    \par
+    \geraFichaCatalografica%
+\else%
+    % Imprime a folha de rosto com a ficha catalográfica em outra página.
+    \imprimirfolhaderosto%
+\fi
+
+% --- Errata ---
+\ifDefinidoConteudoDaErrata%
+    \begin{errata}
+        \ValorDoConteudoDaErrata{}
+    \end{errata}
+\fi
+
+% --- Folha de aprovação ---
+\ifDeveGerarFolhaDeAprovacao%
+    \geraFolhaDeAprovacao%
+\fi
+
+% --- Dedicatória ---
+\ifDefinidoConteudoDaDedicatoria%
+    \begin{AmbienteDedicatoria}
+        \ValorDoConteudoDaDedicatoria{}
+    \end{AmbienteDedicatoria}
+\fi
+
+% --- Agradecimentos ---
+\ifDefinidoConteudoDosAgradecimentos%
+    \begin{AmbienteAgradecimentos}
+        \ValorDoConteudoDosAgradecimentos{}
+    \end{AmbienteAgradecimentos}
+\fi
+
+% --- Epígrafe ---
+\ifDefinidoConteudoDaEpigrafe%
+    \begin{AmbienteEpigrafe}
+        \ValorDoConteudoDaEpigrafe{}
+    \end{AmbienteEpigrafe}
+\fi
+
+% --- Resumos ---
+\begin{AmbienteResumo}
+    \ValorDoConteudoDoResumo{}
+\end{AmbienteResumo}
+\ValorDosResumosEmLinguasEstrangeiras{}
+
+% --- Lista de ilustrações ---
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\cleardoublepage{}
+
+% --- Lista de tabelas ---
+\pdfbookmark[0]{\listtablename}{lot}
+\listoftables*
+\cleardoublepage{}
+
+% --- Lista de abreviaturas e siglas ---
+\printglossary[type=abbreviations,style=altlist,title=\listadesiglasname]
+\cleardoublepage{}
+
+% --- Lista de símbolos ---
+\printglossary[type=symbols,title=\listadesimbolosname]
+\cleardoublepage{}
+
+% --- Sumário ---
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage{}
+
+% =====

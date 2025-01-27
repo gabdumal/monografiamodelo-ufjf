@@ -1,0 +1,52 @@
+% =====
+% Componentes
+% =====
+
+\gdef\ComponenteAutores{{%
+            \flushright%
+            \ABNTEXchapterfont%
+            {\ImprimeAutoresComInformacao}
+            \par
+        }}
+
+\gdef\ComponenteTituloESubtitulo{{%
+            \centering%
+            \large%
+            \textbf{\ValorDoTitulo{}}%
+            \ifDefinidoSubtitulo%
+                {\textbf{:} \ValorDoSubtitulo{}}%
+            \fi
+            \par
+        }}
+
+\gdef\ComponenteTituloESubtituloEstrangeiros{{%
+            \ifDefinidoTituloEstrangeiro%
+                \centering%
+                \large%
+                \textit{
+                    \textbf{\ValorDoTituloEstrangeiro{}}%
+                    \ifDefinidoSubtituloEstrangeiro%
+                        {\textbf{:} \ValorDoSubtituloEstrangeiro{}}%
+                    \fi
+                }%
+                \par
+            \fi
+        }}
+
+\gdef\ComponenteDataEAcesso{{%
+            \flushright%
+            \ABNTEXchapterfont%
+            Submetido em \ValorDaDataDeSubmissao{}.
+            Aprovado em \ValorDaDataDeAprovacao{}.
+            \\
+            \ifDefinidoInformacoesDeAcesso%
+                \ValorDasInformacoesDeAcesso{}
+            \fi
+            \par
+        }}
+
+\gdef\ComponenteFontePropria{
+    Elaborado pelos autores (\ValorDoAnoDeSubmissao{}).
+}
+
+% =====

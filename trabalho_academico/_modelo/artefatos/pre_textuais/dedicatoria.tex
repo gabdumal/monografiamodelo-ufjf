@@ -1,0 +1,26 @@
+% =====
+% Dedicatória
+% =====
+
+\newif\ifDefinidoConteudoDaDedicatoria{} \DefinidoConteudoDaDedicatoriafalse%
+
+\NewDocumentEnvironment{AmbienteDedicatoria}{}
+{%
+    \dedicatoria%
+    \vspace*{\fill}
+    \flushright%
+    \hspace{.45\textwidth}
+    \minipage{.5\textwidth}
+}
+{%
+    \endminipage%
+    \endflushright%
+    \enddedicatoria%
+}
+
+\NewDocumentCommand{\insereDedicatoria}{+m}{%
+    \def\ValorDoConteudoDaDedicatoria{#1}
+    \DefinidoConteudoDaDedicatoriatrue%
+}
+
+% =====

@@ -1,0 +1,62 @@
+% =====
+% Componentes
+% =====
+
+\gdef\ComponenteAutor{{%
+            \center%
+            \ABNTEXchapterfont%
+            \textbf{\ValorDoNomeCompletoDoAutor{}}
+            \par
+        }}
+
+\gdef\ComponenteTituloESubtitulo{{%
+            \center%
+            \ABNTEXchapterfont%
+            \textbf{\ValorDoTitulo{}}%
+            \ifDefinidoSubtitulo%
+                {\textbf{:} \ValorDoSubtitulo{}}%
+            \fi
+            \par
+        }}
+
+\gdef\ComponenteLocalEData{{%
+            \center%
+            \ABNTEXchapterfont%
+            \ValorDaCidade{}%
+            \ifDefinidoEstado%
+                {,~\ValorDaSiglaDoEstado{}}%
+            \fi
+            \par
+            \ValorDoAnoDeAprovacao{}
+            \\
+        }}
+
+\gdef\ComponenteGrauECurso{%
+    \ifDefinidoMestrado%
+        título
+    \else
+        \ifDefinidoDoutorado%
+            título de
+        \else
+            grau
+        \fi
+    \fi
+    de \titlecap{\ValorDoGrau{}} em \ValorDoCurso{}%
+}
+
+\gdef\ComponenteNatureza{{%
+            \ABNTEXchapterfont%
+            \hspace{.45\textwidth}
+            \begin{minipage}{.5\textwidth}
+                \ValorDoTipo{}\ submetida ao corpo docente
+                d\ValorDoArtigoGramaticalDoSubmetendo{} \ValorDoNomeDoSubmetendo{}
+                d\ValorDoArtigoGramaticalDaInstituicao{} \ValorDoNomeDaInstituicao{}
+                como requisito parcial à obtenção do \ComponenteGrauECurso.
+            \end{minipage}%
+        }}
+
+\gdef\ComponenteFontePropria{
+    Elaborado pelos autores (\ValorDoAnoDeAprovacao{}).
+}
+
+% =====

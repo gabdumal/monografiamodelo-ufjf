@@ -1,3 +1,10 @@
+## Environment
+.envrc
+.direnv/
+
+## Build
+**/.build/
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

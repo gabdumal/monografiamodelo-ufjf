@@ -1,0 +1,21 @@
+% =====
+% Epígrafe
+% =====
+
+\newif\ifDefinidoConteudoDaEpigrafe{} \DefinidoConteudoDaEpigrafefalse%
+
+\NewDocumentEnvironment{AmbienteEpigrafe}{}
+{%
+    \epigrafe%
+    \vspace*{\fill}
+}
+{%
+    \endepigrafe%
+}
+
+\NewDocumentCommand{\insereEpigrafe}{+m}{%
+    \def\ValorDoConteudoDaEpigrafe{#1}
+    \DefinidoConteudoDaEpigrafetrue%
+}
+
+% =====

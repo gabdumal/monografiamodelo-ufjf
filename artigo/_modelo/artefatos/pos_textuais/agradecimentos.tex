@@ -1,0 +1,25 @@
+% =====
+% Agradecimentos
+% =====
+
+\renewenvironment{agradecimentos}[1]{%
+    \chapter*[\agradecimentosname]{\agradecimentosname}
+    #1
+}{\PRIVATEclearpageifneeded}
+
+\newif\ifDefinidoConteudoDosAgradecimentos{} \DefinidoConteudoDosAgradecimentosfalse%
+
+\NewDocumentEnvironment{AmbienteAgradecimentos}{}
+{%
+    \agradecimentos%
+}
+{%
+    \endagradecimentos%
+}
+
+\NewDocumentCommand{\insereAgradecimentos}{+m}{%
+    \newcommand\ValorDoConteudoDosAgradecimentos{#1}
+    \DefinidoConteudoDosAgradecimentostrue%
+}
+
+% =====

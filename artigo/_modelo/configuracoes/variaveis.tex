@@ -1,0 +1,183 @@
+% =====
+% Variáveis
+% =====
+
+% -----
+% Flags e outras variáveis de decisão
+% -----
+
+% --- Título ---
+\newif\ifDefinidoSubtitulo{} \DefinidoSubtitulofalse{}
+\newif\ifDefinidoTituloEstrangeiro{} \DefinidoTituloEstrangeirofalse{}
+\newif\ifDefinidoSubtituloEstrangeiro{} \DefinidoSubtituloEstrangeirofalse{}
+
+% --- Acesso ---
+\newif\ifDefinidoInformacoesDeAcesso{} \DefinidoInformacoesDeAcessofalse{}
+
+% -----
+
+% -----
+% Variáveis de texto
+% -----
+
+% --- Título ---
+\gdef\ValorDoTitulo{}
+\def\DefineTitulo#1{\gdef\ValorDoTitulo{#1}}
+
+\gdef\ValorDoSubtitulo{}
+\def\DefineSubtitulo#1{\gdef\ValorDoSubtitulo{#1}\DefinidoSubtitulotrue}
+
+\gdef\ValorDoTituloCompleto{%
+    \ValorDoTitulo{}%
+    \ifDefinidoSubtitulo{}: \ValorDoSubtitulo{}\fi%
+}
+
+\title{\ValorDoTituloCompleto}
+
+\def\DefineTituloEstrangeiro#1{\gdef\ValorDoTituloEstrangeiro{#1}\DefinidoTituloEstrangeirotrue}
+
+\def\DefineSubtituloEstrangeiro#1{\gdef\ValorDoSubtituloEstrangeiro{#1}\DefinidoSubtituloEstrangeirotrue}
+
+\gdef\ValorDoTituloEstrangeiroCompleto{\ifDefinidoTituloEstrangeiro{}\ValorDoTituloEstrangeiro{}\ifDefinidoSubtituloEstrangeiro{}: \ValorDoSubtituloEstrangeiro{}\fi\fi}
+
+\newcommand{\theforeigntitle}{\ValorDoTituloEstrangeiroCompleto}
+
+% --- Datas ---
+\def\DefineDataDeSubmissao#1#2#3{%
+    \gdef\ValorDoDiaDeSubmissao{#1}
+    \gdef\ValorDoMesDeSubmissao{#2}
+    \gdef\ValorDoAnoDeSubmissao{#3}
+}
+\gdef\ValorDaDataDeSubmissao{\ValorDoDiaDeSubmissao{} de \ValorDoMesDeSubmissao{} de \ValorDoAnoDeSubmissao{}}
+
+\def\DefineDataDeAprovacao#1#2#3{%
+    \gdef\ValorDoDiaDeAprovacao{#1}
+    \gdef\ValorDoMesDeAprovacao{#2}
+    \gdef\ValorDoAnoDeAprovacao{#3}
+}
+\gdef\ValorDaDataDeAprovacao{\ValorDoDiaDeAprovacao{} de \ValorDoMesDeAprovacao{} de \ValorDoAnoDeAprovacao{}}
+
+% --- Acesso ---
+\def\DefineInformacoesDeAcesso#1{%
+    \gdef\ValorDasInformacoesDeAcesso{#1}%
+    \DefinidoInformacoesDeAcessotrue%
+}
+
+% --- Pessoas ---
+
+\def\DefineAutor#1#2#3{
+    \appenddata{autores}{{{#1}, {#2}, {#3}}}
+}
+
+\def\ValorDoUltimoSobrenomeDoAutor#1{%
+    \edef\temp{\noexpand\firstofthree\getdata[#1]{autores}\relax}%
+    \temp%
+}
+
+\def\ValorDoRestanteDoNomeDoAutor#1{%
+    \edef\temp{\noexpand\secondofthree\getdata[#1]{autores}\relax}%
+    \temp%
+}
+
+\def\ValorDoNomeCompletoDoAutor#1{%
+    \ValorDoRestanteDoNomeDoAutor{#1} %
+    \ValorDoUltimoSobrenomeDoAutor{#1}%
+}
+
+\def\ValorDaInformacaoDoNomeDoAutor#1{%
+    \edef\temp{\noexpand\thirdofthree\getdata[#1]{autores}\relax}%
+    \temp%
+}
+
+% --- Palavras-chave ---
+\def\DefinePalavrasChave#1#2#3#4#5
+{%
+    \gdef\ValorDaPalavraChaveUm{#1}
+    \gdef\ValorDaPalavraChaveDois{#2}
+    \gdef\ValorDaPalavraChaveTres{#3}
+    \gdef\ValorDaPalavraChaveQuatro{#4}
+    \gdef\ValorDaPalavraChaveCinco{#5}
+}
+
+\NewDocumentCommand{\formataPalavrasChave}{m m m m m}
+{%
+    #1;
+    #2;
+    #3%
+    \ifstrempty{#4}{}{; #4%
+        \ifstrempty{#5}{}{; #5}%
+    }%
+}
+
+\def\ValorDasPalavrasChave{
+    \ValorDaPalavraChaveUm;
+    \ValorDaPalavraChaveDois;
+    \ValorDaPalavraChaveTres%
+    \ifdefempty{\ValorDaPalavraChaveQuatro}{}{; \ValorDaPalavraChaveQuatro%
+        \ifdefempty{\ValorDaPalavraChaveCinco}{}{; \ValorDaPalavraChaveCinco}%
+    }%
+}
+
+% -----
+
+\def\testaVariaveis{
+    \ValorDoTitulo{}
+
+    {%
+        \ifDefinidoSubtitulo{%
+            Subtítulo está definido:
+            \ValorDoSubtitulo{}
+        }
+        \else{%
+            Subtítulo não está definido.
+        }
+        \fi
+    }
+
+    {%
+
+        \ifDefinidoTituloEstrangeiro{%
+            Título estrangeiro está definido:
+            \ValorDoTituloEstrangeiro{}
+
+            {%
+                \ifDefinidoSubtituloEstrangeiro{%
+                    Subtítulo estrangeiro está definido:
+                    \ValorDoSubtituloEstrangeiro{}
+                }
+                \else{%
+                    Subtítulo estrangeiro não está definido.
+                }
+                \fi
+            }
+
+        }
+        \else{%
+            Título estrangeiro não está definido.
+        }
+        \fi
+    }
+
+    Data de submissão: \ValorDaDataDeSubmissao{}
+
+    Data de aprovação: \ValorDaDataDeAprovacao{}
+
+    \ValorDoUltimoSobrenomeDoAutor{1} ---
+    \ValorDoRestanteDoNomeDoAutor{1} ---
+    \ValorDoNomeCompletoDoAutor{1}
+
+    [\ValorDaPalavraChaveUm]
+    [\ValorDaPalavraChaveDois]
+    [\ValorDaPalavraChaveTres]
+    [\ValorDaPalavraChaveQuatro]
+    [\ValorDaPalavraChaveCinco]
+
+    \ValorDasPalavrasChave.
+
+    % \ifdefempty{\ValorDaPalavraChaveQuatro}{Quarta palavra-chave vazia.}{Quarta palavra-chave não vazia.}
+
+    % \ifdefempty{\ValorDaPalavraChaveCinco}{Quinta palavra-chave vazia.}{Quinta palavra-chave não vazia.}
+
+}
+
+% =====

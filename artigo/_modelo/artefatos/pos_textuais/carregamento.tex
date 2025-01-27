@@ -1,0 +1,28 @@
+% =====
+% Artefatos pós-textuais
+% =====
+
+\postextual{}
+
+% --- Referências ---
+\bibliography{cx_bibliografia}
+
+% --- Glossário ---
+\ifDefinidoInserirGlossario%
+    \printglossary[title=Glossário]
+\fi
+
+% --- Apêndices ---
+\input{apendices/apendices.tex}
+
+% --- Anexos ---
+\input{anexos/anexos.tex}
+
+% --- Agradecimentos ---
+\ifDefinidoConteudoDosAgradecimentos%
+    \begin{AmbienteAgradecimentos}
+        \ValorDoConteudoDosAgradecimentos{}
+    \end{AmbienteAgradecimentos}
+\fi
+
+% =====

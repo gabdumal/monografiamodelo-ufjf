@@ -1,0 +1,12 @@
+% =====
+% Errata
+% =====
+
+\newif\ifDefinidoConteudoDaErrata{} \DefinidoConteudoDaErratafalse%
+
+\NewDocumentCommand{\insereErrata}{+m}{%
+    \def\ValorDoConteudoDaErrata{#1}
+    \DefinidoConteudoDaErratatrue%
+}
+
+% =====

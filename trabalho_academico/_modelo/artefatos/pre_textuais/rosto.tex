@@ -1,0 +1,32 @@
+% =====
+% Folha de rosto
+% =====
+
+\renewcommand{\folhaderostocontent}{%
+    \ABNTEXchapterfont%
+    \center%
+
+    \ComponenteAutor{}
+    \vspace{4cm}
+
+    \ComponenteTituloESubtitulo{}
+    \vspace{4cm}
+
+    \ComponenteNatureza{}
+    \vspace{2cm}
+
+    \begin{flushright}
+        Orientador\ifGeneroDoOrientadorFeminino{a}\fi:
+        \ValorDoNomeCompletoDoOrientadorComTitulo{}
+        \par
+        \ifDefinidoCoorientador%
+            Coorientador\ifGeneroDoCoorientadorFeminino{a}\fi: \ValorDoNomeCompletoDoCoorientadorComTitulo{}
+        \par
+        \fi
+    \end{flushright}
+    \vfill
+
+    \ComponenteLocalEData{}
+}
+
+% =====

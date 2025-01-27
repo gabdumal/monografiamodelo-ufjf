@@ -1,0 +1,103 @@
+% =====
+% Folha de aprovação
+% =====
+
+\newif\ifDeveGerarFolhaDeAprovacao{} \DeveGerarFolhaDeAprovacaofalse%
+\newif\ifDefinidoFolhaDeAprovacaoEmDuasColunas{} \DefinidoFolhaDeAprovacaoEmDuasColunasfalse%
+
+\NewDocumentCommand{\insereFolhaDeAprovacao}{!o}{%
+    \DeveGerarFolhaDeAprovacaotrue%
+    \IfNoValueF{#1}{\def\ValorDoConteudoDaFolhaDeAprovacao{#1}}
+}
+
+\NewDocumentCommand{\insereFolhaDeAprovacaoEmDuasColunas}{}{%
+    \DeveGerarFolhaDeAprovacaotrue%
+    \DefinidoFolhaDeAprovacaoEmDuasColunastrue%
+}
+
+\NewDocumentCommand{\geraFolhaDeAprovacao}{}
+{%
+    \begin{folhadeaprovacao}
+
+        \ifdefined\ValorDoConteudoDaFolhaDeAprovacao%
+            \ValorDoConteudoDaFolhaDeAprovacao%
+        \else%
+
+            \ABNTEXchapterfont%
+            \center%
+            \setlength{\ABNTEXsignwidth}{10cm}
+
+            \ComponenteAutor{}
+            \vspace{\fill}
+
+            \ComponenteTituloESubtitulo{}
+            \vspace{\fill}
+
+            \ComponenteNatureza{}
+            \vspace{\fill}
+
+            \begin{flushleft}
+                Aprovado em \ValorDoDiaDeAprovacao{} de \ValorDoMesDeAprovacao{} de \ValorDoAnoDeAprovacao{}.
+            \end{flushleft}
+            \vspace{0.5cm}
+
+            {BANCA EXAMINADORA}
+
+            \ifDefinidoFolhaDeAprovacaoEmDuasColunas%
+                \begin{multicols}{2}
+                    \setlength{\ABNTEXsignwidth}{7cm}%
+                    \fi
+
+                    \assinatura*{%
+                        \ValorDoNomeCompletoDoOrientadorComTitulo{}
+                        --- Orientador\\
+                        \ValorDoNomeDaInstituicaoDoOrientador{}\\
+                    }
+
+                    \ifDefinidoCoorientador%
+                        \assinatura*{%
+                            \ValorDoNomeCompletoDoCoorientadorComTitulo{}
+                            --- Coorientador\\
+                            \ValorDoNomeDaInstituicaoDoCoorientador{}\\
+                        }
+                    \fi
+
+                    \ifDefinidoExaminadorUm%
+                        \assinatura*{%
+                            \ValorDoNomeCompletoDoExaminadorUmComTitulo{}\\
+                            \ValorDoNomeDaInstituicaoDoExaminadorUm{}\\
+                        }
+                    \fi
+
+                    \ifDefinidoExaminadorDois%
+                        \assinatura*{%
+                            \ValorDoNomeCompletoDoExaminadorDoisComTitulo{}\\
+                            \ValorDoNomeDaInstituicaoDoExaminadorDois{}\\
+                        }
+                    \fi
+
+                    \ifDefinidoExaminadorTres%
+                        \assinatura*{%
+                            \ValorDoNomeCompletoDoExaminadorTresComTitulo{}\\
+                            \ValorDoNomeDaInstituicaoDoExaminadorTres{}\\
+                        }
+                    \fi
+
+                    \ifDefinidoExaminadorQuatro%
+                        \assinatura*{%
+                            \ValorDoNomeCompletoDoExaminadorQuatroComTitulo{}\\
+                            \ValorDoNomeDaInstituicaoDoExaminadorQuatro{}\\
+                        }
+                    \fi
+
+                    \ifDefinidoFolhaDeAprovacaoEmDuasColunas%
+                \end{multicols}%
+            \fi
+
+        \fi
+
+    \end{folhadeaprovacao}
+    \newpage%
+}
+
+% =====

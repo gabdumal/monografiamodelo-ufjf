@@ -1,0 +1,95 @@
+% =====
+% Ficha catalográfica
+% =====
+
+\newif\ifDeveGerarFichaCatalografica{} \DeveGerarFichaCatalograficafalse%
+
+\NewDocumentCommand{\insereFichaCatalografica}{!o}{%
+    \DeveGerarFichaCatalograficatrue%
+    \IfNoValueF{#1}{\def\ValorDoConteudoDaFichaCatalografica{#1}}
+}
+
+\NewDocumentCommand{\geraFichaCatalografica}{}
+{%
+    \begin{fichacatalografica}
+
+        \ifdefined\ValorDoConteudoDaFichaCatalografica%
+            \ValorDoConteudoDaFichaCatalografica%
+        \else%
+
+            \sffamily
+            \vspace*{\fill} % Posição vertical
+            \begin{center}  % Minipage Centralizado
+                \fbox{%
+                    \begin{minipage}[c][8cm]{13.5cm}  % Largura
+                        \centering
+                        \parbox[t]{0.9\textwidth}
+                        {% Conteúdo da Ficha Catalográfica
+                            \small
+                            \ValorDoUltimoSobrenomeDoAutor{}, \ValorDoRestanteDoNomeDoAutor{}
+
+                            \hspace{0.5cm}
+                            \ValorDoTituloCompleto{} / \ValorDoNomeCompletoDoAutor{}.
+                            --- \ValorDaCidade{}, \ValorDoAnoDeAprovacao.
+
+                            \hspace{0.5cm}
+                            \thelastpage~p.~: il.~(algumas color.); 30 cm.\\
+
+                            \hspace{0.5cm} Orientação de:
+                            \ValorDoNomeCompletoDoOrientadorComTitulo{}
+                            \ifDefinidoCoorientador%
+                                \par
+                                \hspace{0.5cm} Coorientação de:
+                                \ValorDoNomeCompletoDoCoorientadorComTitulo{}
+                            \fi
+                            \\
+
+                            \hspace{0.5cm}
+                            \ValorDoTipo{} (\ValorDoDiploma{})
+                            --- \ValorDoNomeDaInstituicao{},
+                            \ValorDaCidadeDaInstituicao{},
+                            \ValorDoAnoDeAprovacao{}.
+                            \\
+
+                            \hspace{0.5cm}
+                            1.~\titlecap{\ValorDaPalavraChaveUm}.
+                            2.~\titlecap{\ValorDaPalavraChaveDois}.
+                            3.~\titlecap{\ValorDaPalavraChaveTres}.
+                            \ifdefempty{\ValorDaPalavraChaveQuatro}{}{%
+                                4.~\titlecap{\ValorDaPalavraChaveQuatro}.
+                                \ifdefempty{\ValorDaPalavraChaveCinco}{}{%
+                                    5.~\titlecap{\ValorDaPalavraChaveCinco}.
+                                }
+                            }
+                            I.~\ValorDoUltimoSobrenomeDoOrientador{}, \ValorDoRestanteDoNomeDoOrientador{}.
+                            \ifDefinidoCoorientador%
+                                II.~\ValorDoUltimoSobrenomeDoCoorientador{}, \ValorDoRestanteDoNomeDoCoorientador{}.
+                            \fi
+                            \ifDefinidoCoorientador%
+                                I%
+                            \fi
+                            II.~\ValorDoNomeDaInstituicao{}.
+                            \ifDefinidoCoorientador%
+                                IV.~%
+                            \else
+                                III.~%
+                            \fi
+                            \ValorDoNomeDaUnidadeAcademica{}.
+                            \ifDefinidoCoorientador%
+                                V.~%
+                            \else
+                                IV.~%
+                            \fi
+                            Título
+                        }
+                    \end{minipage}
+                }
+            \end{center}
+
+        \fi
+
+    \end{fichacatalografica}
+    \newpage%
+}
+
+% =====
